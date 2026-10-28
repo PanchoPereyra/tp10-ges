@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TP-10-GDS</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+  <header>
+    <div>
+      <h1>Estado del proyecto</h1>
+      <p>Trabajo Práctico Nº10 - Gestión del Desarrollo de Software</p>
+      <p>Agasse Juan Ignacio - Pereyra Juan Francisco</p>
+    </div>
+    <div style="display:flex; gap:10px; align-items:center">
+      <span class="estado" id="estado-general">Estado: bien</span>
+      <button id="cambiar-tema" type="button">Cambiar tema</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="rejilla" aria-label="Indicadores del proyecto">
+      <article class="tarjeta">
+        <h2>Progreso del sprint</h2>
+        <div class="valor" id="valor-sprint">78%</div>
+        <div class="barra">
+          <div id="barra-sprint" style="width:78%"></div>
+        </div>
+        <p class="detalle" id="detalle-sprint">32 de 41 tareas</p>
+      </article>
+      <article class="tarjeta">
+        <h2>Pruebas aprobadas</h2>
+        <div class="valor" id="valor-qa">82%</div>
+        <div class="barra">
+          <div id="barra-qa" style="width:82%"></div>
+        </div>
+        <p class="detalle" id="detalle-qa">164 de 200 pruebas</p>
+      </article>
+      <article class="tarjeta">
+        <h2>Tiempo</h2>
+        <div class="valor" id="valor-tiempo">91%</div>
+        <div class="barra">
+          <div id="barra-tiempo" style="width:91%"></div>
+        </div>
+        <p class="detalle" id="detalle-tiempo">-2 días de diferencia</p>
+      </article>
+      <article class="tarjeta">
+        <h2>Bugs resueltos</h2>
+        <div class="valor" id="valor-bugs">85%</div>
+        <div class="barra">
+          <div id="barra-bugs" style="width:85%"></div>
+        </div>
+        <p class="detalle" id="detalle-bugs">3 bugs abiertos</p>
+      </article>
+    </section>
+
+    <!-- Seccion para agregar indicadores personalizados -->
+    <section class="seccion">
+      <h2>Agregar indicador</h2>
+      <form id="form-indicador" class="form-indicador">
+        <div class="campo">
+          <label for="nombre-indicador">Nombre</label>
+          <input type="text" id="nombre-indicador" maxlength="40" required placeholder="Ej.: Bugs críticos abiertos">
+        </div>
+        <div class="campo">
+          <label for="valor-indicador">Valor</label>
+          <input type="number" id="valor-indicador" step="any" required>
+        </div>
+        <div class="campo">
+          <label for="unidad-indicador">Unidad</label>
+          <input type="text" id="unidad-indicador" maxlength="12" placeholder="Ej.: bugs, %, días">
+        </div>
+        <div class="campo">
+          <label for="limite-indicador">Límite de riesgo</label>
+          <input type="number" id="limite-indicador" step="any" required>
+        </div>
+        <div class="campo">
+          <label for="sentido-indicador">Se considera en riesgo cuando el valor es</label>
+          <select id="sentido-indicador">
+            <option value="mayor">igual o mayor a:</option>
+            <option value="menor">menor a:</option>
+          </select>
+        </div>
+        <button type="submit">Agregar</button>
+      </form>
+      <div id="indicadores-personalizados" class="rejilla rejilla-personalizada" aria-live="polite"></div>
+    </section>
+
+    <section class="seccion">
+      <h2>Datos del proyecto</h2>
+      <div class="controles">
+        <div class="control">
+          <h3>Progreso del sprint</h3>
+          <input type="range" id="sprint" min="0" max="100" value="78" aria-label="Progreso del sprint">
+          <div class="controles">
+            <div class="campo">
+              <label for="tareas-hechas">Tareas hechas</label>
+              <input type="number" id="tareas-hechas" min="0" value="32">
+            </div>
+            <div class="campo">
+              <label for="tareas-total">Total de tareas</label>
+              <input type="number" id="tareas-total" min="1" value="41">
+            </div>
+          </div>
+          <div class="campo">
+            <label>En riesgo por debajo de (%)</label>
+            <input type="number" id="limite-sprint" min="0" max="100" value="60">
+          </div>
+        </div>
+
+        <div class="control">
+          <h3>Pruebas</h3>
+          <input type="range" id="qa" min="0" max="100" value="82" aria-label="Porcentaje de pruebas aprobadas">
+          <div class="controles">
+            <div class="campo">
+              <label for="pruebas-aprobadas">Aprobadas</label>
+              <input type="number" id="pruebas-aprobadas" min="0" value="164">
+            </div>
+            <div class="campo">
+              <label for="pruebas-total">Total de pruebas</label>
+              <input type="number" id="pruebas-total" min="1" value="200">
+            </div>
+          </div>
+          <div class="campo">
+            <label>En riesgo por debajo de (%)</label>
+            <input type="number" id="limite-qa" min="0" max="100" value="70">
+          </div>
+        </div>
+
+        <div class="control">
+          <h3>Tiempo</h3>
+          <input type="range" id="tiempo" min="0" max="100" value="91" aria-label="Eficiencia de tiempo">
+          <div class="controles">
+            <div class="campo">
+              <label for="dias-planificados">Días planificados</label>
+              <input type="number" id="dias-planificados" min="1" value="14">
+            </div>
+            <div class="campo">
+              <label for="diferencia-dias">Diferencia en días</label>
+              <input type="number" id="diferencia-dias" value="-2">
+            </div>
+          </div>
+          <div class="campo">
+            <label>En riesgo por debajo de (%)</label>
+            <input type="number" id="limite-tiempo" min="0" max="100" value="85">
+          </div>
+        </div>
+
+        <div class="control">
+          <h3>Bugs</h3>
+          <input type="range" id="bugs" min="0" max="100" value="85" aria-label="Porcentaje de bugs resueltos">
+          <div class="controles">
+            <div class="campo">
+              <label for="bugs-resueltos">Resueltos</label>
+              <input type="number" id="bugs-resueltos" min="0" value="85">
+            </div>
+            <div class="campo">
+              <label for="bugs-abiertos">Abiertos</label>
+              <input type="number" id="bugs-abiertos" min="0" value="15">
+            </div>
+          </div>
+          <div class="campo">
+            <label>En riesgo por debajo de (%)</label>
+            <input type="number" id="limite-bugs" min="0" max="100" value="70">
+          </div>
+        </div>
+      </div>
+      <p class="nota">Los valores y límites se pueden cambiar para probar distintos estados.</p>
+    </section>
+
+    <section class="seccion">
+      <div>
+        <h1>Escenarios rápidos</h1>
+        <p>Solo para probar distintos estados</p>
+        <br>
+      </div>
+      <div class="escenarios">
+        <button type="button" data-escenario="bien">Todo bien</button>
+        <button type="button" data-escenario="riesgo">En riesgo</button>
+        <button type="button" data-escenario="critico">Crítico</button>
+      </div>
+    </section>
+
+    <section class="dos-columnas">
+      <div class="seccion">
+        <h2>Avance del sprint</h2>
+        <div class="grafico"><canvas id="grafico-sprint"></canvas></div>
+      </div>
+      <div class="seccion">
+        <h2>Bugs</h2>
+        <div class="grafico"><canvas id="grafico-bugs"></canvas></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+
+</html>
